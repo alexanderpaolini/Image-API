@@ -26,7 +26,7 @@ export default function (this: API, router: Router): void {
   router.get('/:color/:level/:xp/:maxxp/:picture/:tag/:usertag', async (req, res) => {
     let { color, level, xp, maxxp, picture, tag, usertag } = req.params as any as CardRequest
 
-    const str = color + level + xp + maxxp + tag + usertag
+    const str = color + level + xp + maxxp + picture + tag + usertag
 
     const hasImage = await this.redis.exists(str)
     if (hasImage) {
@@ -202,9 +202,9 @@ export default function (this: API, router: Router): void {
 
     const buffer = canvas.toBuffer('image/png')
 
+    await this.redis.setBuffer(str, buffer)
+
     res.contentType('image/png')
     res.send(buffer)
-
-    await this.redis.setBuffer(str, buffer)
   })
 }

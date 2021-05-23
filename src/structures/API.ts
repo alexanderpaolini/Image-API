@@ -2,9 +2,10 @@ import config from '../config'
 
 import path from 'path'
 import express from 'express'
-
 import Redis from 'ioredis'
+
 import { LoadRoutes as loadRoutes } from '@jpbberry/load-routes'
+import { RestManager } from 'discord-rose'
 
 import { Utils } from '../utils'
 
@@ -16,6 +17,7 @@ export class API {
   logger = console
   redis = new Redis(this.config.redis)
   utils = new Utils()
+  discord = new RestManager(this.config.discord.token)
 
   constructor () {
     this.app.set('trust-proxy', true)

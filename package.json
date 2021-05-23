@@ -32,6 +32,7 @@
     "@jpbberry/load-routes": "^1.0.3",
     "@types/node-fetch": "^2.5.10",
     "canvas": "^2.8.0",
+    "discord-rose": "^1.4.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "ioredis": "^4.27.3",
