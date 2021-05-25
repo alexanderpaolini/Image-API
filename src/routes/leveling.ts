@@ -23,8 +23,8 @@ interface LeaderboardUser {
 
 export default function (this: API, router: Router): void {
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  router.get('/:color/:level/:xp/:maxxp/:picture/:tag/:usertag', async (req, res) => {
-    let { color, level, xp, maxxp, picture, tag, usertag } = req.params as any as CardRequest
+  router.post('/card', async (req, res) => {
+    let { color, level, xp, maxxp, picture, tag, usertag } = req.body as CardRequest
 
     const str = color + level + xp + maxxp + picture + tag + usertag
 
@@ -125,7 +125,7 @@ export default function (this: API, router: Router): void {
   })
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  router.post('/', async (req, res) => {
+  router.post('/leaderboard', async (req, res) => {
     const users: LeaderboardUser[] = req.body.data
     if (users.length > 8) users.length = 8
 
