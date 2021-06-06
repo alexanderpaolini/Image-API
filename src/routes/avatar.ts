@@ -11,14 +11,14 @@ export default function (this: API, router: Router): void {
 
     // The string to check for redis
     const redisStr = `avatars.${userId}`
-    const hasAvatar = await this.redis.exists(redisStr)
+    const hasAvatar = await this.cache.redis.exists(redisStr)
 
     // Check if redis has it
     if (hasAvatar) {
       res.status(200)
       res.contentType('application/json')
       res.send({
-        avatar: await this.redis.get(redisStr)
+        avatar: await this.cache.redis.get(redisStr)
       })
       return
     }
@@ -40,7 +40,7 @@ export default function (this: API, router: Router): void {
       : `https://cdn.discordapp.com/embed/avatars/${Number(user.discriminator) % 5}`
 
     // Cache it
-    await this.redis.set(redisStr, avatarUrl, 'EX', 900)
+    await this.cache.redis.set(redisStr, avatarUrl, 'EX', 900)
 
     // Send the avatar
     res.status(200)

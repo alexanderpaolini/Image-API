@@ -26,12 +26,12 @@ export default function (this: API, router: Router): void {
   router.post('/card', async (req, res) => {
     let { color, level, xp, maxxp, picture, tag, usertag } = req.body as CardRequest
 
-    const str = color + level + xp + maxxp + picture + tag + usertag
+    const str = 'rank.' + color + level + xp + maxxp + picture + tag + usertag
 
-    const hasImage = await this.redis.exists(str)
+    const hasImage = await this.cache.redis.exists(str)
     if (hasImage) {
-      const image = await this.redis.getBuffer(str)
-      await this.redis.expire(str, this.config.ttl.rank)
+      const image = await this.cache.redis.getBuffer(str)
+      await this.cache.redis.expire(str, this.config.ttl.rank)
 
       res.contentType('image/png')
       res.status(200)
@@ -98,19 +98,7 @@ export default function (this: API, router: Router): void {
     ctx.fill()
 
     try {
-      let buffer: Buffer
-
-      const hasAvatar = await this.redis.exists(picture)
-      if (hasAvatar) {
-        buffer = await this.redis.getBuffer(picture)
-
-        await this.redis.expire(picture, this.config.ttl.avatar)
-      } else {
-        buffer = await this.utils.fetchBuffer(picture)
-
-        await this.redis.setBuffer(picture, buffer, 'EX', this.config.ttl.avatar)
-      }
-
+      const buffer = await this.cache.getUserAvatar(picture)
       const avatar = await Canvas.loadImage(buffer)
 
       ctx.drawImage(avatar, 33, 32, 185, 185)
@@ -119,9 +107,11 @@ export default function (this: API, router: Router): void {
     const buffer = canvas.toBuffer('image/png')
 
     res.contentType('image/png')
+    res.status(200)
     res.send(buffer)
 
-    await this.redis.setBuffer(str, buffer, 'EX', this.config.ttl.rank)
+    // Cache the image
+    await this.cache.cacheImage(str, buffer)
   })
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -129,15 +119,13 @@ export default function (this: API, router: Router): void {
     const users: LeaderboardUser[] = req.body.data
     if (users.length > 8) users.length = 8
 
-    const str = JSON.stringify(users)
+    const str = 'leaderboard.' + JSON.stringify(users)
 
-    const hasLeaderboard = await this.redis.exists(str)
-    if (hasLeaderboard) {
-      const image = await this.redis.getBuffer(str)
-
+    const cachedLeaderboard = await this.cache.getImage(str)
+    if (cachedLeaderboard) {
       res.status(200)
       res.contentType('image/png')
-      res.send(image)
+      res.send(cachedLeaderboard)
       return
     }
 
@@ -164,24 +152,11 @@ export default function (this: API, router: Router): void {
       try {
         // Do the canvas image
         try {
-          let buffer: Buffer | null
-
-          const hasAvatar = await this.redis.exists(user.pfp)
-          if (hasAvatar) {
-            buffer = await this.redis.getBuffer(user.pfp)
-
-            await this.redis.expire(user.pfp, this.config.ttl.avatar)
-          } else {
-            buffer = await this.utils.fetchBuffer(user.pfp)
-            if (!buffer) throw new Error('')
-
-            await this.redis.setBuffer(user.pfp, buffer, 'EX', this.config.ttl.avatar)
-          }
-
+          const buffer = await this.cache.getUserAvatar(user.pfp)
           const avatar = await Canvas.loadImage(buffer)
 
           ctx.drawImage(avatar, 82, 175 + diff - 40, 100, 100)
-        } catch { }
+        } catch { /* Voiding */ }
 
         // Fill the user tag
         ctx.fillStyle = '#ffffff'
@@ -194,7 +169,7 @@ export default function (this: API, router: Router): void {
         ctx.font = 'normal 32px sans-serif'
         ctx.fillText(`Level: ${user.level}`, 122 + 84, 175 + diff + 50)
         ctx.fillText(`Rank: ${user.rank}`, 317 + 84, 175 + diff + 50)
-      } catch { }
+      } catch { /* Voiding */ }
 
       // Increase the difference
       diff = diff + 120
@@ -202,9 +177,11 @@ export default function (this: API, router: Router): void {
 
     const buffer = canvas.toBuffer('image/png')
 
-    await this.redis.setBuffer(str, buffer)
-
     res.contentType('image/png')
+    res.status(200)
     res.send(buffer)
+
+    // Cache the image
+    await this.cache.cacheImage(str, buffer)
   })
 }

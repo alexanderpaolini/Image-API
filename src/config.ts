@@ -6,9 +6,10 @@ env.config()
 
 const config = {
   ttl: {
-    rank: 15 * 1000,
-    leaderboard: 15 * 1000 * 60,
-    avatar: 15 * 1000 * 60
+    rank: 15,
+    leaderboard: 15 * 60,
+    avatar: 15 * 60,
+    teapot: 15 * 60
   },
 
   api: {
