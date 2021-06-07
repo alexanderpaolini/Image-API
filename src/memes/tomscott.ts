@@ -8,10 +8,11 @@ export default {
   validator: () => true,
   exec: async (api, { text1, text2 }, { req, res }) => {
     const { canvas, ctx } = await api.utils.generateCanvas('tomscott')
+
     ctx.font = '48px Arial'
 
-    api.utils.drawText(ctx, 537, 50, 937, 475, text1 || '', 42)
-    api.utils.drawText(ctx, 537, 562, 937, 986, text2 || '', 42)
+    api.utils.drawText(ctx, 370, 35, 730, 475, text1 || '', 42)
+    api.utils.drawText(ctx, 370, 415, 730, 986, text2 || '', 42)
 
     return canvas.toBuffer('image/png')
   }
