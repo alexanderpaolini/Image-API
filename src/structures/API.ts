@@ -21,7 +21,7 @@ export class API {
   cache = new Cache(this)
   discord = new RestManager(this.config.discord.token)
   urls: Array<[string, string]> = [
-    ['teacup', 'https://img.terano.dev/N4_eb5YZ'],
+    ['teapot', 'https://img.terano.dev/N4_eb5YZ'],
     ['tomscott', 'https://img.terano.dev/s-0tjXwn'],
     ['drake', 'https://img.terano.dev/3ie1KoSD'],
     ['ussr', 'https://img.terano.dev/gFa5NJ8O'],

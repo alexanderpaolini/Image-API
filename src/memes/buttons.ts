@@ -1,5 +1,3 @@
-import Canvas from 'canvas'
-
 import { Meme } from '.'
 
 export default {
@@ -9,13 +7,8 @@ export default {
   parser: (req, res) => req.query,
   validator: () => true,
   exec: async (api, { text1, text2 }, { req, res }) => {
-    const canvas = Canvas.createCanvas(600, 908)
-    const ctx = canvas.getContext('2d')
+    const { canvas, ctx } = await api.utils.generateCanvas('buttons')
     ctx.font = '40px Arial'
-
-    const buttonsBuffer = await api.cache.redis.getBuffer('buttons')
-    const buttons = await Canvas.loadImage(buttonsBuffer)
-    ctx.drawImage(buttons, 0, 0, 600, 908)
 
     ctx.rotate(Math.PI * 0.1 * -1)
 
