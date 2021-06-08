@@ -22,6 +22,7 @@ export class API {
   discord = new RestManager(this.config.discord.token)
   urls: Array<[string, string]> = [
     ['amiajoke', 'https://img.terano.dev/FctDm-AI'],
+    ['brazzers', 'https://img.terano.dev/dF_87SfD'],
     ['buttons', 'https://img.terano.dev/e1jcZ8SE'],
     ['chip-1', 'https://img.terano.dev/Fe8RI5yb'],
     ['chip-2', 'https://img.terano.dev/kk-EAtVA'],
