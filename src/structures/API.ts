@@ -37,7 +37,9 @@ export class API {
     ['trash-overlay', 'https://img.terano.dev/CiFV8EQu'],
     ['ussr', 'https://img.terano.dev/gFa5NJ8O'],
     ['wasted', 'https://img.terano.dev/CmmpaFS3'],
-    ['what', 'https://img.terano.dev/6cLIyA4f']
+    ['what', 'https://img.terano.dev/6cLIyA4f'],
+    // Error message
+    ['oops', 'https://img.terano.dev/GZXbLe4l']
   ]
 
   constructor () {

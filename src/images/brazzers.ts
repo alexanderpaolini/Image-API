@@ -7,7 +7,7 @@ const IMAGE_RATIO = 0.01
 
 export default {
   name: 'brazzers',
-  cacheResponse: false,
+  cacheResponse: true,
   contentType: 'image/png',
   parser: (req, res) => req.query,
   validator: (api, d) => d.url && typeof d.url === 'string' && api.utils.validateUrl(d.url),

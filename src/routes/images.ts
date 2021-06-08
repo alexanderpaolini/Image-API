@@ -1,6 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 
+import { performance } from 'perf_hooks'
+
 import { Router } from 'express'
 
 import { API } from '../structures/API'
@@ -37,7 +39,11 @@ export default function (this: API, router: Router): void {
     if (!validated) {
       this.logger.debug('Invalid request for:', meme.name)
       res.status(400)
-      res.send('Invalid Arguments')
+      if (req.headers.always_use_image) {
+        const buffer = await this.cache.getImage('oops')
+        res.contentType('image/png')
+        res.send(buffer)
+      } else res.send('Invalid Arguments')
       return
     } else this.logger.debug('Valiated request for:', meme.name)
 
@@ -54,7 +60,9 @@ export default function (this: API, router: Router): void {
 
     let buffer!: Buffer
     try {
+      const now = performance.now()
       buffer = await meme.exec(this, data, { req, res })
+      this.logger.debug('Ran image', meme.name, 'in', (performance.now() - now).toFixed(2) + 'ms', '')
     } catch (err) {
       this.logger.error('Error occured while running image', meme.name, '\n', err)
     }
