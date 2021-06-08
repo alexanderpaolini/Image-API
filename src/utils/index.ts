@@ -4,6 +4,8 @@ import Canvas from 'canvas'
 import { API } from '../structures'
 
 export class Utils {
+  urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/
+
   constructor (private readonly api: API) { }
   /**
    * Fetch a buffer
@@ -85,7 +87,7 @@ export class Utils {
    * @param width Width
    * @param height Height
    */
-  async drawAvatar (
+  async drawAvatarFromUrl (
     ctx: Canvas.NodeCanvasRenderingContext2D,
     url: string,
     startX: number,
@@ -94,12 +96,47 @@ export class Utils {
     height: number
   ): Promise<void> {
     try {
-      const avatarBuffer = await this.api.cache.getUserAvatar(url)
+      const avatarBuffer = await this.api.cache.getAvatar(url)
       const avatar = await Canvas.loadImage(avatarBuffer)
 
       ctx.drawImage(avatar, startX, startY, width, height)
     } catch (err) {
       this.api.logger.error('Error occured when drawing avatar:\n', err)
     }
+  }
+
+  /**
+   * Draw the avatar on the canvas
+   * @param ctx The Canvas ctx
+   * @param bufferName The avatar URL
+   * @param startX The X it starts at
+   * @param startY The Y it starts at
+   * @param width Width
+   * @param height Height
+   */
+  async drawImageFromRedisBuffer (
+    ctx: Canvas.NodeCanvasRenderingContext2D,
+    bufferName: string,
+    startX: number,
+    startY: number,
+    width: number,
+    height: number
+  ): Promise<void> {
+    try {
+      const buffer = await this.api.cache.redis.getBuffer(bufferName)
+      const image = await Canvas.loadImage(buffer)
+
+      ctx.drawImage(image, startX, startY, width, height)
+    } catch (err) {
+      this.api.logger.error('Error coccured when drawing avatar:\n', err)
+    }
+  }
+
+  /**
+   * Validate a URL
+   * @param url The URL to test
+   */
+  validateUrl (url: string): boolean {
+    return this.urlRegex.test(url)
   }
 }

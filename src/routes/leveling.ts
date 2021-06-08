@@ -98,7 +98,7 @@ export default function (this: API, router: Router): void {
     ctx.fill()
 
     try {
-      const buffer = await this.cache.getUserAvatar(picture)
+      const buffer = await this.cache.getAvatar(picture)
       const avatar = await Canvas.loadImage(buffer)
 
       ctx.drawImage(avatar, 33, 32, 185, 185)
@@ -152,7 +152,7 @@ export default function (this: API, router: Router): void {
       try {
         // Do the canvas image
         try {
-          const buffer = await this.cache.getUserAvatar(user.pfp)
+          const buffer = await this.cache.getAvatar(user.pfp)
           const avatar = await Canvas.loadImage(buffer)
 
           ctx.drawImage(avatar, 82, 175 + diff - 40, 100, 100)

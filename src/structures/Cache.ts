@@ -11,7 +11,7 @@ export class Cache {
    * Get a user's avatar
    * @param url The user's avatarUrl
    */
-  async getUserAvatar (url: string): Promise<Buffer> {
+  async getAvatar (url: string): Promise<Buffer> {
     const buffer = await this.redis.getBuffer(`avatar.${url}`)
     if (!buffer) {
       const buff = await this.api.utils.fetchBuffer(url)
@@ -29,7 +29,7 @@ export class Cache {
    * @param url The avatar's URL
    * @param avatar The avatar's buffer
    */
-  async setUserAvatar (url: string, avatar: Buffer): Promise<void> {
+  async cacheAvatar (url: string, avatar: Buffer): Promise<void> {
     this.api.logger.debug('Cached avatar:', url)
     await this.redis.setBuffer(`avatar.${url}`, avatar, 'EX', this.api.config.ttl.avatar)
   }

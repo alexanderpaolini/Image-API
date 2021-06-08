@@ -21,17 +21,21 @@ export class API {
   cache = new Cache(this)
   discord = new RestManager(this.config.discord.token)
   urls: Array<[string, string]> = [
-    ['teapot', 'https://img.terano.dev/N4_eb5YZ'],
-    ['tomscott', 'https://img.terano.dev/s-0tjXwn'],
-    ['drake', 'https://img.terano.dev/3ie1KoSD'],
-    ['ussr', 'https://img.terano.dev/gFa5NJ8O'],
-    ['chip-1', 'https://img.terano.dev/Fe8RI5yb'],
-    ['chip-2', 'https://img.terano.dev/kk-EAtVA'],
-    ['trash', 'https://img.terano.dev/ziQdiqDP'],
-    ['trash-overlay', 'https://img.terano.dev/CiFV8EQu'],
     ['amiajoke', 'https://img.terano.dev/FctDm-AI'],
     ['buttons', 'https://img.terano.dev/e1jcZ8SE'],
-    ['shit', 'https://img.terano.dev/TYBRMY-h']
+    ['chip-1', 'https://img.terano.dev/Fe8RI5yb'],
+    ['chip-2', 'https://img.terano.dev/kk-EAtVA'],
+    ['drake', 'https://img.terano.dev/3ie1KoSD'],
+    ['gay', 'https://img.terano.dev/pi_gyiOB'],
+    ['shit', 'https://img.terano.dev/TYBRMY-h'],
+    ['sus', 'https://img.terano.dev/V1MljQrp'],
+    ['teapot', 'https://img.terano.dev/N4_eb5YZ'],
+    ['tomscott', 'https://img.terano.dev/s-0tjXwn'],
+    ['trans', 'https://img.terano.dev/sSItt1kb'],
+    ['trash', 'https://img.terano.dev/ziQdiqDP'],
+    ['trash-overlay', 'https://img.terano.dev/CiFV8EQu'],
+    ['ussr', 'https://img.terano.dev/gFa5NJ8O'],
+    ['what', 'https://img.terano.dev/6cLIyA4f']
   ]
 
   constructor () {
@@ -59,7 +63,9 @@ export class API {
 
         const buffer = await this.utils.fetchBuffer(url[1])
         await this.cache.redis.setBuffer(url[0], buffer)
-      } catch { /* Voided */ }
+      } catch (err) {
+        this.logger.error('Error occured when caching URL:\n', err)
+      }
     }
   }
 }
