@@ -35,6 +35,7 @@ export class API {
     ['trash', 'https://img.terano.dev/ziQdiqDP'],
     ['trash-overlay', 'https://img.terano.dev/CiFV8EQu'],
     ['ussr', 'https://img.terano.dev/gFa5NJ8O'],
+    ['wasted', 'https://img.terano.dev/CmmpaFS3'],
     ['what', 'https://img.terano.dev/6cLIyA4f']
   ]
 
