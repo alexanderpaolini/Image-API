@@ -10,7 +10,7 @@ export default {
   validator: (api, d) => d.url && typeof d.url === 'string' && api.utils.validateUrl(d.url),
   exec: async (api, { url }, { req, res }) => {
     const image = await Canvas.loadImage(url)
-    const canvas = Canvas.createCanvas(image.height, image.width)
+    const canvas = Canvas.createCanvas(image.width, image.height)
     const ctx = canvas.getContext('2d')
 
     ctx.moveTo(image.width / 2, 0)
