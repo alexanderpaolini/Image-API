@@ -14,6 +14,8 @@ export class Logger {
   }
 
   debug (...data: any[]): void {
-    console.log(`[ImageAPI] ${colors.magenta('[Debug]')}`, ...data)
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`[ImageAPI] ${colors.magenta('[Debug]')}`, ...data)
+    }
   }
 }
