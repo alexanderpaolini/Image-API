@@ -13,7 +13,8 @@ const config = {
   },
 
   api: {
-    port: process.env.NODE_ENV === 'production' ? 6962 : 6969
+    port: process.env.NODE_ENV === 'production' ? 6962 : 6969,
+    token: process.env.API_KEY as string
   },
 
   discord: {

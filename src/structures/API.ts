@@ -11,6 +11,8 @@ import { Utils } from '../utils'
 import { Cache } from './Cache'
 import { Logger } from './Logger'
 
+import authentication from '../middlewares/authentication'
+
 export class API {
   config = config
 
@@ -20,6 +22,7 @@ export class API {
   utils = new Utils(this)
   cache = new Cache(this)
   discord = new RestManager(this.config.discord.token)
+
   urls: Array<[string, string]> = [
     ['amiajoke', 'https://img.terano.dev/FctDm-AI'],
     ['brazzers', 'https://img.terano.dev/dF_87SfD'],
@@ -47,6 +50,7 @@ export class API {
 
     this.app.use(express.urlencoded({ extended: true }))
     this.app.use(express.json())
+    this.app.use('*', authentication(this))
 
     // This must be last
     loadRoutes(this.app, path.join(__dirname, '../routes'), this)
