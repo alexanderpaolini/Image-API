@@ -11,6 +11,8 @@ import { Utils } from '../utils'
 import { Cache } from './Cache'
 import { Logger } from './Logger'
 
+import fs from 'fs'
+
 import authentication from '../middlewares/authentication'
 
 export class API {
@@ -23,28 +25,6 @@ export class API {
   cache = new Cache(this)
   discord = new RestManager(this.config.discord.token)
 
-  urls: Array<[string, string]> = [
-    ['amiajoke', 'https://img.terano.dev/FctDm-AI'],
-    ['brazzers', 'https://img.terano.dev/dF_87SfD'],
-    ['buttons', 'https://img.terano.dev/e1jcZ8SE'],
-    ['chip-1', 'https://img.terano.dev/Fe8RI5yb'],
-    ['chip-2', 'https://img.terano.dev/kk-EAtVA'],
-    ['drake', 'https://img.terano.dev/3ie1KoSD'],
-    ['gay', 'https://img.terano.dev/pi_gyiOB'],
-    ['shit', 'https://img.terano.dev/TYBRMY-h'],
-    ['sus', 'https://img.terano.dev/V1MljQrp'],
-    ['teapot', 'https://img.terano.dev/N4_eb5YZ'],
-    ['tomscott', 'https://img.terano.dev/s-0tjXwn'],
-    ['trans', 'https://img.terano.dev/sSItt1kb'],
-    ['trash', 'https://img.terano.dev/ziQdiqDP'],
-    ['trash-overlay', 'https://img.terano.dev/CiFV8EQu'],
-    ['ussr', 'https://img.terano.dev/gFa5NJ8O'],
-    ['wasted', 'https://img.terano.dev/CmmpaFS3'],
-    ['what', 'https://img.terano.dev/6cLIyA4f'],
-    // Error message
-    ['oops', 'https://img.terano.dev/GZXbLe4l']
-  ]
-
   constructor () {
     this.app.set('trust-proxy', true)
 
@@ -56,24 +36,22 @@ export class API {
     loadRoutes(this.app, path.join(__dirname, '../routes'), this)
 
     // Cache some things
-    void this.cacheUrls()
+    void this.cacheImages()
 
     this.app.listen(this.config.api.port, () => {
       this.logger.log('Started on port:', this.config.api.port)
     })
   }
 
-  async cacheUrls (): Promise<void> {
-    for (const url of this.urls) {
-      try {
-        const exists = await this.cache.redis.exists(url[0])
-        if (exists) continue
+  async cacheImages (): Promise<void> {
+    const files = fs.readdirSync(path.resolve(__dirname, '../../images/'), { withFileTypes: true })
+    for (const file of files) {
+      if (!file.name.endsWith('.png')) continue
 
-        const buffer = await this.utils.fetchBuffer(url[1])
-        await this.cache.redis.setBuffer(url[0], buffer)
-      } catch (err) {
-        this.logger.error('Error occured when caching URL:\n', err)
-      }
+      const buffer = fs.readFileSync(path.resolve(__dirname, '../../images/', file.name))
+
+      this.logger.debug('Cached image', file.name)
+      await this.cache.redis.setBuffer(file.name.split('.')[0], buffer)
     }
   }
 }
