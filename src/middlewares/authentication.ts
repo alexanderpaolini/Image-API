@@ -9,11 +9,12 @@ export default (api: API): MiddlewareFunction => {
     if (
       req.headers.authorization === config.api.token ||
       req.query.token === config.api.token
-    ) return next()
-    else {
+    ) {
+      return next()
+    } else {
       res.status(401)
       res.send('Unauthorized')
-      api.logger.warn('Request from', req.hostname, 'unauthorized')
+      api.logger.warn('Request', req.url, 'from', req.hostname, 'unauthorized')
     }
   }
 }
