@@ -18,7 +18,7 @@ export default function (this: API, router: Router): void {
   for (const file of files) {
     if (!file.isFile() || !file.name.endsWith('.js')) continue
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const meme = require(dir + '/' + file.name).default
+    const meme: Meme<any> = require(dir + '/' + file.name).default
     if (meme) memes.push(meme)
   }
 
