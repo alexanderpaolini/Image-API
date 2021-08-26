@@ -2,7 +2,7 @@ import { Meme } from '.'
 
 export default {
   name: 'linus',
-  cacheResponse: false,
+  cacheResponse: true,
   contentType: 'image/png',
   parser: (req, res) => req.query,
   validator: () => true,
@@ -10,8 +10,8 @@ export default {
     const { canvas, ctx } = await api.utils.generateCanvas('linus')
     ctx.font = '48px Arial'
 
-    api.utils.drawText(ctx, 329, 35, 626, 299, text1 || '', 42)
-    api.utils.drawText(ctx, 329, 369, 626, 640, text2 || '', 42)
+    api.utils.drawText(ctx, 329, 40, 661, 299, text1 || '', 42)
+    api.utils.drawText(ctx, 329, 374, 661, 640, text2 || '', 42)
 
     return canvas.toBuffer('image/png')
   }

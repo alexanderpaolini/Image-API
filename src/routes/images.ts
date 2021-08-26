@@ -66,6 +66,7 @@ export default function (this: API, router: Router): void {
     } catch (err) {
       this.logger.error('Error occured while running image', meme.name, '\n', err)
     }
+
     if (!Buffer.isBuffer(buffer)) {
       res.status(500)
       res.contentType('text')

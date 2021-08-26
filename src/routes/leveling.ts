@@ -54,7 +54,7 @@ export default function (this: API, router: Router): void {
     // Write the level info
     ctx.font = '26px sans-serif'
     ctx.fillStyle = '#ffffff'
-    ctx.fillText(`Level: ${level} l XP: ${xp} / ${maxxp}`, 275, canvas.height / 2)
+    ctx.fillText(`Level: ${level}  XP: ${xp} / ${maxxp}`, 275, canvas.height / 2)
 
     // Write the tag
     ctx.font = 'normal 32px sans-serif'
