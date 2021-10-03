@@ -25,7 +25,7 @@ export interface Meme<K> {
   /**
    * Validate the data
    */
-  validator: (api: API, data: K) => boolean | Promise<boolean>
+  validator: (api: API, data: K | any) => boolean | Promise<boolean>
   /**
    * Main function
    */

@@ -4,7 +4,6 @@ import path from 'path'
 import express from 'express'
 
 import { LoadRoutes as loadRoutes } from '@jpbberry/load-routes'
-import { RestManager } from 'discord-rose'
 
 import { Utils } from '../utils'
 
@@ -23,7 +22,6 @@ export class API {
   logger = new Logger()
   utils = new Utils(this)
   cache = new Cache(this)
-  discord = new RestManager(this.config.discord.token)
 
   constructor () {
     this.app.set('trust-proxy', true)

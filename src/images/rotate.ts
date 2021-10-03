@@ -1,7 +1,7 @@
 // @ts-expect-error
 import GIFEncoder from 'gif-encoder-2'
 
-import Canvas from 'canvas'
+import { Canvas , loadImage} from 'skia-canvas'
 
 import { Meme } from '.'
 
@@ -17,8 +17,8 @@ export default {
     const width = 512
     const height = 512
 
-    const image = await Canvas.loadImage(url)
-    const canvas = Canvas.createCanvas(width, height)
+    const image = await loadImage(url)
+    const canvas = new Canvas(width, height)
 
     const ctx = canvas.getContext('2d')
 

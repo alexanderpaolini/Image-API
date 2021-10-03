@@ -1,4 +1,4 @@
-import Canvas from 'canvas'
+import { Canvas, loadImage } from 'skia-canvas'
 
 import { Meme } from '.'
 
@@ -9,9 +9,9 @@ export default {
   parser: (req, res) => req.query,
   validator: (api, d) => d.url && typeof d.url === 'string' && api.utils.validateUrl(d.url),
   exec: async (api, { url }, { req, res }) => {
-    const image = await Canvas.loadImage(url)
+    const image = await loadImage(url)
 
-    const canvas = Canvas.createCanvas(image.width, image.height)
+    const canvas = new Canvas(image.width, image.height)
     const ctx = canvas.getContext('2d')
 
     ctx.drawImage(image, 0, 0)

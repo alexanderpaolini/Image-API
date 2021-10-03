@@ -1,4 +1,4 @@
-import Canvas from 'canvas'
+import { Canvas } from 'skia-canvas'
 import { Meme } from '.'
 
 export default {
@@ -13,7 +13,7 @@ export default {
     typeof d.url2 === 'string' &&
     api.utils.validateUrl(d.url2),
   exec: async (api, { url1, url2 }, { req, res }) => {
-    const canvas = Canvas.createCanvas(1024, 1024)
+    const canvas = new Canvas(1024, 1024)
     const ctx = canvas.getContext('2d')
 
     await api.utils.drawAvatarFromUrl(ctx, url1, 0, 0, 1024, 1024)

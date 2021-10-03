@@ -1,4 +1,4 @@
-import Canvas from 'canvas'
+import { Canvas } from 'skia-canvas'
 
 import { Meme } from '.'
 
@@ -9,7 +9,7 @@ export default {
   parser: (req, res) => req.query,
   validator: (api, d) => d.url && typeof d.url === 'string' && api.utils.validateUrl(d.url),
   exec: async (api, { url, version }, { req, res }) => {
-    const canvas = Canvas.createCanvas(2048, 2048)
+    const canvas = new Canvas(2048, 2048)
     const ctx = canvas.getContext('2d')
 
     ctx.save()

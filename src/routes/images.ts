@@ -45,7 +45,7 @@ export default function (this: API, router: Router): void {
         res.send(buffer)
       } else res.send('Invalid Arguments')
       return
-    } else this.logger.debug('Valiated request for:', meme.name)
+    } else this.logger.debug('Validated request for:', meme.name)
 
     const str = meme.name + '.' + JSON.stringify(data)
 
@@ -64,7 +64,7 @@ export default function (this: API, router: Router): void {
       buffer = await meme.exec(this, data, { req, res })
       this.logger.debug('Ran image', meme.name, 'in', (performance.now() - now).toFixed(2) + 'ms', '')
     } catch (err) {
-      this.logger.error('Error occured while running image', meme.name, '\n', err)
+      this.logger.error('Error occurred while running image', meme.name, '\n', err)
     }
 
     if (!Buffer.isBuffer(buffer)) {

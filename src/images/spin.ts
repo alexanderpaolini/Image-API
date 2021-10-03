@@ -1,7 +1,7 @@
 // @ts-expect-error
 import GIFEncoder from 'gif-encoder-2'
 
-import Canvas from 'canvas'
+import { Canvas, loadImage } from 'skia-canvas'
 
 import { Meme } from '.'
 
@@ -18,8 +18,8 @@ export default {
     const height = 512
     const numAngles = angles ? Number(angles) : ANGLES
 
-    const image = await Canvas.loadImage(url)
-    const canvas = Canvas.createCanvas(width, height)
+    const image = await loadImage(url)
+    const canvas = new Canvas(width, height)
 
     const ctx = canvas.getContext('2d')
 
@@ -47,16 +47,7 @@ export default {
 
       ctx.translate(-centerX, -centerY)
 
-      const imageData = ctx.getImageData(0, 0, width, width)
-
-      for (let j = 0; j < imageData.data.length; j += 4) {
-        imageData.data[j] = 64
-        imageData.data[j + 1] = 40
-        imageData.data[j + 2] = 20
-        imageData.data[j + 3] = 0
-      }
-
-      ctx.putImageData(imageData, 0, 0)
+      api.utils.clearCanvasCtx(ctx, width, width)
 
       ctx.drawImage(image, 0, 0, width, height)
     }

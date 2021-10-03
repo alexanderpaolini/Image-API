@@ -1,4 +1,4 @@
-import Canvas from 'canvas'
+import { Canvas, loadImage } from 'skia-canvas'
 
 import { Router } from 'express'
 
@@ -39,7 +39,7 @@ export default function (this: API, router: Router): void {
       return
     }
 
-    const canvas = Canvas.createCanvas(850, 250)
+    const canvas = new Canvas(850, 250)
     const ctx = canvas.getContext('2d')
 
     // Fill the background
@@ -99,7 +99,7 @@ export default function (this: API, router: Router): void {
 
     try {
       const buffer = await this.cache.getAvatar(picture)
-      const avatar = await Canvas.loadImage(buffer)
+      const avatar = await loadImage(buffer)
 
       ctx.drawImage(avatar, 33, 32, 185, 185)
     } catch { }
@@ -130,7 +130,7 @@ export default function (this: API, router: Router): void {
     }
 
     // Create the canvas
-    const canvas = Canvas.createCanvas(800, 1250)
+    const canvas = new Canvas(800, 1250)
     const ctx = canvas.getContext('2d')
 
     // Background
@@ -153,7 +153,7 @@ export default function (this: API, router: Router): void {
         // Do the canvas image
         try {
           const buffer = await this.cache.getAvatar(user.pfp)
-          const avatar = await Canvas.loadImage(buffer)
+          const avatar = await loadImage(buffer)
 
           ctx.drawImage(avatar, 82, 175 + diff - 40, 100, 100)
         } catch { /* Voiding */ }

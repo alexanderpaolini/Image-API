@@ -1,5 +1,5 @@
 import fetch from 'node-fetch'
-import Canvas from 'canvas'
+import { Canvas, CanvasRenderingContext2D, Image, loadImage } from 'skia-canvas'
 
 import { API } from '../structures'
 
@@ -16,13 +16,18 @@ export class Utils {
   async fetchBuffer (path: string): Promise<Buffer> {
     this.api.logger.debug('Fetching URL:', path)
     const res = await fetch(path)
-
-    const buffer = await res.buffer()
-
-    return buffer
+    return await res.buffer()
   }
 
-  drawText (ctx: Canvas.NodeCanvasRenderingContext2D, startX: number, startY: number, endX: number, endY: number, text: string, height: number): void {
+  drawText (
+    ctx: CanvasRenderingContext2D,
+    startX: number,
+    startY: number,
+    endX: number,
+    endY: number,
+    text: string,
+    height: number
+  ): void {
     let line = ''
     const words = text.split(' ')
 
@@ -65,13 +70,13 @@ export class Utils {
    * @param pregen String yes that thing
    */
   async generateCanvas (pregen: string): Promise<{
-    canvas: Canvas.Canvas
-    ctx: Canvas.NodeCanvasRenderingContext2D
+    canvas: Canvas
+    ctx: CanvasRenderingContext2D
   }> {
     const buffer = await this.api.cache.redis.getBuffer(pregen)
-    const image = await Canvas.loadImage(buffer)
+    const image = await loadImage(buffer)
 
-    const canvas = Canvas.createCanvas(image.width, image.height)
+    const canvas = new Canvas(image.width, image.height)
     const ctx = canvas.getContext('2d')
 
     ctx.drawImage(image, 0, 0, image.width, image.height)
@@ -89,7 +94,7 @@ export class Utils {
    * @param height Height
    */
   async drawAvatarFromUrl (
-    ctx: Canvas.NodeCanvasRenderingContext2D,
+    ctx: CanvasRenderingContext2D,
     url: string,
     startX: number,
     startY: number,
@@ -98,11 +103,11 @@ export class Utils {
   ): Promise<void> {
     try {
       const avatarBuffer = await this.api.cache.getAvatar(url)
-      const avatar = await Canvas.loadImage(avatarBuffer)
+      const avatar = await loadImage(avatarBuffer)
 
       ctx.drawImage(avatar, startX, startY, width, height)
     } catch (err) {
-      this.api.logger.error('Error occured when drawing avatar:\n', err)
+      this.api.logger.error('Error occurred when drawing avatar:\n', err)
     }
   }
 
@@ -116,7 +121,7 @@ export class Utils {
    * @param height Height
    */
   async drawImageFromRedisBuffer (
-    ctx: Canvas.NodeCanvasRenderingContext2D,
+    ctx: CanvasRenderingContext2D,
     bufferName: string,
     startX: number,
     startY: number,
@@ -125,11 +130,11 @@ export class Utils {
   ): Promise<void> {
     try {
       const buffer = await this.api.cache.redis.getBuffer(bufferName)
-      const image = await Canvas.loadImage(buffer)
+      const image = await loadImage(buffer)
 
       ctx.drawImage(image, startX, startY, width, height)
     } catch (err) {
-      this.api.logger.error('Error coccured when drawing avatar:\n', err)
+      this.api.logger.error('Error occurred when drawing avatar:\n', err)
     }
   }
 
@@ -147,7 +152,7 @@ export class Utils {
    * @param width How long
    * @param height How high
    */
-  clearCanvasCtx (ctx: Canvas.CanvasRenderingContext2D, width: number, height: number): void {
+  clearCanvasCtx (ctx: CanvasRenderingContext2D, width: number, height: number): void {
     const imageData = ctx.getImageData(0, 0, width, height)
 
     for (let j = 0; j < imageData.data.length; j += 4) {
@@ -161,8 +166,8 @@ export class Utils {
   }
 
   drawImageWithRotation (
-    ctx: Canvas.CanvasRenderingContext2D,
-    img: Canvas.Image,
+    ctx: CanvasRenderingContext2D,
+    img: Image,
     x: number,
     y: number,
     width: number,
