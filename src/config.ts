@@ -17,10 +17,6 @@ const config = {
     token: process.env.API_KEY as string
   },
 
-  discord: {
-    token: process.env.DISCORD_TOKEN as string
-  },
-
   redis: {
     host: '127.0.0.1',
     port: 6379

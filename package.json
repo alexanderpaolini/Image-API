@@ -38,6 +38,7 @@
     "gif-encoder-2": "^1.0.5",
     "ioredis": "^4.27.3",
     "node-fetch": "^2.6.1",
-    "skia-canvas": "^0.9.25"
+    "skia-canvas": "^0.9.25",
+    "winston": "^3.3.3"
   }
 }

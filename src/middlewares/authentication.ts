@@ -14,7 +14,7 @@ export default (api: API): MiddlewareFunction => {
     } else {
       res.status(401)
       res.send('Unauthorized')
-      api.logger.warn('Request', req.url, 'from', req.hostname, 'unauthorized')
+      api.logger.warn('Request %s from %s unauthorized', req.url, req.hostname)
     }
   }
 }

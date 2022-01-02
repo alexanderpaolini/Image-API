@@ -1,16 +1,16 @@
 import config from '../config'
 
+import fs from 'fs'
 import path from 'path'
 import express from 'express'
+
+import { createLogger, transports, format } from 'winston'
 
 import { LoadRoutes as loadRoutes } from '@jpbberry/load-routes'
 
 import { Utils } from '../utils'
 
 import { Cache } from './Cache'
-import { Logger } from './Logger'
-
-import fs from 'fs'
 
 import authentication from '../middlewares/authentication'
 
@@ -19,7 +19,20 @@ export class API {
 
   app = express()
 
-  logger = new Logger()
+  logger = createLogger({
+    level: 'silly',
+    format: format.combine(
+      format.colorize({ colors: { info: 'blue', debug: 'magenta', warn: 'yellow', error: 'red', silly: 'rainbow' }, level: true }),
+      format.label({ label: 'API' }),
+      format.errors({ stack: true }),
+      format.splat(),
+      format.printf((info) => `[${info.label as string}] [${info.level}]: ${info.stack ? info.stack : info.message}`)
+    ),
+    transports: [
+      new transports.Console()
+    ]
+  })
+
   utils = new Utils(this)
   cache = new Cache(this)
 
@@ -37,7 +50,7 @@ export class API {
     void this.cacheImages()
 
     this.app.listen(this.config.api.port, () => {
-      this.logger.log('Started on port:', this.config.api.port)
+      this.logger.info('Started on port: %i', this.config.api.port)
     })
   }
 
@@ -48,7 +61,7 @@ export class API {
 
       const buffer = fs.readFileSync(path.resolve(__dirname, '../../images/', file.name))
 
-      this.logger.debug('Cached image', file.name)
+      this.logger.debug('Cached image %s', file.name)
       await this.cache.redis.setBuffer(file.name.split('.')[0], buffer)
     }
   }

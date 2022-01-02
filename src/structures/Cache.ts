@@ -19,7 +19,7 @@ export class Cache {
       await this.redis.setBuffer(`avatar.${url}`, buff, 'EX', this.api.config.ttl.avatar)
       return buff
     }
-    this.api.logger.debug('Retreived avatar from cache:', url)
+    this.api.logger.debug('Retreived avatar from cache: %s', url)
     await this.redis.expire(`avatar.${url}`, this.api.config.ttl.avatar)
     return buffer
   }
@@ -30,7 +30,7 @@ export class Cache {
    * @param avatar The avatar's buffer
    */
   async cacheAvatar (url: string, avatar: Buffer): Promise<void> {
-    this.api.logger.debug('Cached avatar:', url)
+    this.api.logger.debug('Cached avatar: %s', url)
     await this.redis.setBuffer(`avatar.${url}`, avatar, 'EX', this.api.config.ttl.avatar)
   }
 
@@ -41,7 +41,7 @@ export class Cache {
    * @param ttl The time to expre (seconds)
    */
   async cacheImage (key: string, buffer: Buffer): Promise<void> {
-    this.api.logger.debug('Cached image:', key)
+    this.api.logger.debug('Cached image: %s', key)
     await this.redis.setBuffer(key, buffer, 'EX', 15 * 60)
   }
 
@@ -52,7 +52,7 @@ export class Cache {
   async getImage (key: string): Promise<Buffer | null> {
     const exists = await this.redis.exists(key)
     if (exists) {
-      this.api.logger.debug('Retreived image from cache:', key)
+      this.api.logger.debug('Retreived image from cache: %s', key)
       const buff = await this.redis.getBuffer(key)
       await this.redis.expire(key, 15 * 60)
       return buff

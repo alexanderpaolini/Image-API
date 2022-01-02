@@ -33,11 +33,11 @@ export default function (this: API, router: Router): void {
     }
 
     const data = meme.parser(req, res)
-    this.logger.debug('Parsed request for:', meme.name)
+    this.logger.debug('Parsed request for: %s', meme.name)
     const validated = await meme.validator(this, data)
 
     if (!validated) {
-      this.logger.debug('Invalid request for:', meme.name)
+      this.logger.debug('Invalid request for: %s', meme.name)
       res.status(400)
       if (req.headers.always_use_image) {
         const buffer = await this.cache.getImage('oops')
@@ -45,8 +45,9 @@ export default function (this: API, router: Router): void {
         res.send(buffer)
       } else res.send('Invalid Arguments')
       return
-    } else this.logger.debug('Validated request for:', meme.name)
+    } else this.logger.debug('Validated request for: %s', meme.name)
 
+    delete data.token
     const str = meme.name + '.' + JSON.stringify(data)
 
     const cachedMeme = await this.cache.getImage(str)
@@ -54,7 +55,7 @@ export default function (this: API, router: Router): void {
       res.status(200)
       res.contentType(meme.contentType)
       res.send(cachedMeme)
-      this.logger.log('Sent meme', meme.name, 'to', req.hostname)
+      this.logger.info('Sent meme %s to %s', meme.name, req.hostname)
       return
     }
 
@@ -62,9 +63,9 @@ export default function (this: API, router: Router): void {
     try {
       const now = performance.now()
       buffer = await meme.exec(this, data, { req, res })
-      this.logger.debug('Ran image', meme.name, 'in', (performance.now() - now).toFixed(2) + 'ms', '')
+      this.logger.debug('Ran image %s in %s', meme.name, (performance.now() - now).toFixed(2) + 'ms')
     } catch (err) {
-      this.logger.error('Error occurred while running image', meme.name, '\n', err)
+      this.logger.error(err)
     }
 
     if (!Buffer.isBuffer(buffer)) {
@@ -78,7 +79,7 @@ export default function (this: API, router: Router): void {
     res.contentType(meme.contentType)
     res.send(buffer)
 
-    this.logger.log('Sent meme', meme.name, 'to', req.hostname)
+    this.logger.info('Sent meme %s to %s', meme.name, req.hostname)
 
     if (meme.cacheResponse) await this.cache.cacheImage(str, buffer)
   })

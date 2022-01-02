@@ -14,7 +14,7 @@ export class Utils {
    * @returns The image buffer
    */
   async fetchBuffer (path: string): Promise<Buffer> {
-    this.api.logger.debug('Fetching URL:', path)
+    this.api.logger.debug('Fetching URL: %s', path)
     const res = await fetch(path)
     return await res.buffer()
   }
@@ -107,7 +107,7 @@ export class Utils {
 
       ctx.drawImage(avatar, startX, startY, width, height)
     } catch (err) {
-      this.api.logger.error('Error occurred when drawing avatar:\n', err)
+      this.api.logger.error(err)
     }
   }
 
@@ -134,7 +134,7 @@ export class Utils {
 
       ctx.drawImage(image, startX, startY, width, height)
     } catch (err) {
-      this.api.logger.error('Error occurred when drawing avatar:\n', err)
+      this.api.logger.error(err)
     }
   }
 
