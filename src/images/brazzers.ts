@@ -1,4 +1,4 @@
-import {Canvas, loadImage} from 'skia-canvas'
+import { Canvas, loadImage } from 'skia-canvas'
 
 import { Meme } from '.'
 

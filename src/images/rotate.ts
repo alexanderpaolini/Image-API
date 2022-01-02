@@ -1,7 +1,7 @@
 // @ts-expect-error
 import GIFEncoder from 'gif-encoder-2'
 
-import { Canvas , loadImage} from 'skia-canvas'
+import { Canvas, loadImage } from 'skia-canvas'
 
 import { Meme } from '.'
 
