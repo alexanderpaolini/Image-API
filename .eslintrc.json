@@ -4,10 +4,14 @@
     "project": "./tsconfig.json"
   },
   "rules": {
+    "@typescript-eslint/indent": "off",
     "@typescript-eslint/consistent-type-assertions": "off",
     "@typescript-eslint/no-for-in-array": "off",
     "@typescript-eslint/strict-boolean-expressions": "off",
     "@typescript-eslint/no-dynamic-delete": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-unnecessary-type-assertion": "off",
     "no-void": "off"
   }
 }
