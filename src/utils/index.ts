@@ -1,6 +1,5 @@
 import fetch from 'node-fetch'
 import { Canvas, CanvasRenderingContext2D, Image, loadImage } from 'skia-canvas'
-
 import { API } from '../structures'
 
 export class Utils {
@@ -93,7 +92,7 @@ export class Utils {
    * @param width Width
    * @param height Height
    */
-  async drawAvatarFromUrl (
+  async drawImageFromUrl (
     ctx: CanvasRenderingContext2D,
     url: string,
     startX: number,
@@ -101,14 +100,8 @@ export class Utils {
     width: number,
     height: number
   ): Promise<void> {
-    try {
-      const avatarBuffer = await this.api.cache.getAvatar(url)
-      const avatar = await loadImage(avatarBuffer)
-
-      ctx.drawImage(avatar, startX, startY, width, height)
-    } catch (err) {
-      this.api.logger.error(err)
-    }
+    const buffer = await this.api.cache.getAvatar(url)
+    await this.drawImageFromBuffer(ctx, buffer, startX, startY, width, height)
   }
 
   /**
@@ -120,7 +113,7 @@ export class Utils {
    * @param width Width
    * @param height Height
    */
-  async drawImageFromRedisBuffer (
+  async drawImageFromRedisKey (
     ctx: CanvasRenderingContext2D,
     bufferName: string,
     startX: number,
@@ -128,8 +121,19 @@ export class Utils {
     width: number,
     height: number
   ): Promise<void> {
+    const buffer = await this.api.cache.redis.getBuffer(bufferName)
+    await this.drawImageFromBuffer(ctx, buffer, startX, startY, width, height)
+  }
+
+  async drawImageFromBuffer (
+    ctx: CanvasRenderingContext2D,
+    buffer: Buffer,
+    startX: number,
+    startY: number,
+    width: number,
+    height: number
+  ): Promise<void> {
     try {
-      const buffer = await this.api.cache.redis.getBuffer(bufferName)
       const image = await loadImage(buffer)
 
       ctx.drawImage(image, startX, startY, width, height)

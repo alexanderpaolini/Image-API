@@ -1,6 +1,5 @@
-import { API } from './API'
-
 import Redis from 'ioredis'
+import { API } from './API'
 
 export class Cache {
   redis = new Redis(this.api.config.redis)
@@ -40,9 +39,9 @@ export class Cache {
    * @param buffer The Buffer
    * @param ttl The time to expre (seconds)
    */
-  async cacheImage (key: string, buffer: Buffer): Promise<void> {
+  async cacheImage (key: string, buffer: Buffer, ttl = 15 * 60): Promise<void> {
     this.api.logger.debug('Cached image: %s', key)
-    await this.redis.setBuffer(key, buffer, 'EX', 15 * 60)
+    await this.redis.setBuffer(key, buffer, 'EX', ttl)
   }
 
   /**
@@ -50,10 +49,9 @@ export class Cache {
    * @param key The key, could be anything
    */
   async getImage (key: string): Promise<Buffer | null> {
-    const exists = await this.redis.exists(key)
-    if (exists) {
+    const buff = await this.redis.getBuffer(key)
+    if (buff) {
       this.api.logger.debug('Retreived image from cache: %s', key)
-      const buff = await this.redis.getBuffer(key)
       await this.redis.expire(key, 15 * 60)
       return buff
     }
