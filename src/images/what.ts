@@ -9,7 +9,7 @@ export default {
   exec: async (api, { url }, { req, res }) => {
     const { canvas, ctx } = await api.utils.generateCanvas('what')
 
-    await api.utils.drawAvatarFromUrl(ctx, url, 45, 45, 882, 702)
+    await api.utils.drawImageFromUrl(ctx, url, 45, 45, 882, 702)
 
     return canvas.toBuffer('image/png')
   }

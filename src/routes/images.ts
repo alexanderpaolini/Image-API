@@ -1,13 +1,9 @@
+import { Router } from 'express'
 import fs from 'fs'
 import path from 'path'
-
 import { performance } from 'perf_hooks'
-
-import { Router } from 'express'
-
-import { API } from '../structures/API'
-
 import { Meme } from '../images'
+import { API } from '../structures/API'
 
 export default function (this: API, router: Router): void {
   const memes: Array<Meme<any>> = []

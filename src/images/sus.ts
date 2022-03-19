@@ -1,5 +1,4 @@
 import { Canvas } from 'skia-canvas'
-
 import { Meme } from '.'
 
 export default {
@@ -19,11 +18,11 @@ export default {
     ctx.closePath()
     ctx.clip()
 
-    await api.utils.drawAvatarFromUrl(ctx, url, 1373, 400, 1051, 1051)
+    await api.utils.drawImageFromUrl(ctx, url, 1373, 400, 1051, 1051)
 
     ctx.restore()
 
-    await api.utils.drawImageFromRedisBuffer(ctx, 'sus', 0, 0, 3070, 3070)
+    await api.utils.drawImageFromRedisKey(ctx, 'sus', 0, 0, 3070, 3070)
 
     return canvas.toBuffer('image/png')
   }

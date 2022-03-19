@@ -1,5 +1,4 @@
 import env from 'dotenv'
-
 import { RedisOptions } from 'ioredis'
 
 env.config()

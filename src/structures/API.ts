@@ -1,18 +1,12 @@
-import config from '../config'
-
+import { LoadRoutes as loadRoutes } from '@jpbberry/load-routes'
+import express from 'express'
 import fs from 'fs'
 import path from 'path'
-import express from 'express'
-
-import { createLogger, transports, format } from 'winston'
-
-import { LoadRoutes as loadRoutes } from '@jpbberry/load-routes'
-
-import { Utils } from '../utils'
-
-import { Cache } from './Cache'
-
+import { createLogger, format, transports } from 'winston'
+import config from '../config'
 import authentication from '../middlewares/authentication'
+import { Utils } from '../utils'
+import { Cache } from './Cache'
 
 export class API {
   config = config
@@ -41,7 +35,7 @@ export class API {
 
     this.app.use(express.urlencoded({ extended: true }))
     this.app.use(express.json())
-    this.app.use('*', authentication(this))
+    this.app.use(authentication(this))
 
     // This must be last
     loadRoutes(this.app, path.join(__dirname, '../routes'), this)

@@ -1,7 +1,5 @@
-import { Canvas, loadImage } from 'skia-canvas'
-
 import { Router } from 'express'
-
+import { Canvas, loadImage } from 'skia-canvas'
 import { API } from '../structures/API'
 
 interface CardRequest {
@@ -62,7 +60,7 @@ export default function (this: API, router: Router): void {
     while (ctx.measureText(usertag).width > 530) usertag = `${usertag.slice(0, -4)}...`
     ctx.fillText(`${usertag}`, 275, canvas.height / 3.5)
 
-    // Wrote the user's name
+    // Write the user's name
     ctx.font = 'bold 32px sans-serif'
     ctx.fillStyle = color
     while (ctx.measureText(tag).width > 530) tag = `${tag.slice(0, -4)}...`

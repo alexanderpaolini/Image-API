@@ -14,15 +14,15 @@ export default {
   exec: async (api, { url1, url2 }, { req, res }) => {
     const { canvas, ctx } = await api.utils.generateCanvas('trash')
 
-    await api.utils.drawAvatarFromUrl(ctx, url1, 115, 190, 160, 160)
+    await api.utils.drawImageFromUrl(ctx, url1, 115, 190, 160, 160)
 
     ctx.rotate(Math.PI * 0.03 * -1)
 
-    await api.utils.drawAvatarFromUrl(ctx, url2, 360, 150, 160, 160)
+    await api.utils.drawImageFromUrl(ctx, url2, 360, 150, 160, 160)
 
     ctx.rotate(Math.PI * 0.03)
 
-    await api.utils.drawImageFromRedisBuffer(ctx, 'trash-overlay', 0, 0, 680, 697)
+    await api.utils.drawImageFromRedisKey(ctx, 'trash-overlay', 0, 0, 680, 697)
 
     return canvas.toBuffer('image/png')
   }

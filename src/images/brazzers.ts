@@ -1,5 +1,4 @@
 import { Canvas, loadImage } from 'skia-canvas'
-
 import { Meme } from '.'
 
 const SIZE_PERCENTAGE = 0.02

@@ -1,5 +1,4 @@
 import { Canvas } from 'skia-canvas'
-
 import { Meme } from '.'
 
 export default {
@@ -12,12 +11,12 @@ export default {
     const canvas = new Canvas(2048, 2048)
     const ctx = canvas.getContext('2d')
 
-    await api.utils.drawAvatarFromUrl(ctx, url, 0, 0, 2048, 2048)
+    await api.utils.drawImageFromUrl(ctx, url, 0, 0, 2048, 2048)
 
     ctx.fillStyle = 'rgba(0, 0, 0, 0.5)'
     ctx.fillRect(0, 0, 2048, 2048)
 
-    await api.utils.drawImageFromRedisBuffer(ctx, 'wasted', 512, 512, 1024, 1024)
+    await api.utils.drawImageFromRedisKey(ctx, 'wasted', 512, 512, 1024, 1024)
 
     return canvas.toBuffer('image/png')
   }
