@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-
 import { API } from '../structures'
 
 /**
@@ -29,5 +28,5 @@ export interface Meme<K> {
   /**
    * Main function
    */
-  exec: (api: API, data: K, extra: { req: Request, res: Response}) => Buffer | Promise<Buffer>
+  exec: (api: API, data: K, extra: { req: Request, res: Response }) => Buffer | Promise<Buffer>
 }

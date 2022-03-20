@@ -5,7 +5,7 @@ export default {
   cacheResponse: true,
   contentType: 'image/png',
   parser: (req, res) => req.query,
-  validator: (api, d) => d.url && typeof d.url === 'string' && api.utils.validateUrl(d.url),
+  validator: (api, d) => api.utils.validateUrl(d.url),
   exec: async (api, { url }, { req, res }) => {
     const { canvas, ctx } = await api.utils.generateCanvas('shit')
 

@@ -6,7 +6,7 @@ export default {
   contentType: 'image/png',
   parser: (req, res) => req.query,
   validator: () => true,
-  exec: async (api, { text1, text2 }, { req, res }) => {
+  exec: async (api, { text1, text2, image1, image2 }, { req, res }) => {
     const { canvas, ctx } = await api.utils.generateCanvas('tomscott')
     ctx.font = '48px Arial'
 

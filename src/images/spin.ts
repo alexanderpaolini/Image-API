@@ -10,7 +10,7 @@ export default {
   cacheResponse: true,
   contentType: 'image/gif',
   parser: (req, res) => req.query,
-  validator: (api, d) => d.url && typeof d.url === 'string' && api.utils.validateUrl(d.url),
+  validator: (api, d) => api.utils.validateUrl(d.url),
   exec: async (api, { url, angles }, { req, res }) => {
     const width = 512
     const height = 512

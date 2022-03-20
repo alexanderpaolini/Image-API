@@ -6,7 +6,7 @@ export default {
   cacheResponse: true,
   contentType: 'image/png',
   parser: (req, res) => req.query,
-  validator: (api, d) => d.url && typeof d.url === 'string' && api.utils.validateUrl(d.url),
+  validator: (api, d) => api.utils.validateUrl(d.url),
   exec: async (api, { url }, { req, res }) => {
     const canvas = new Canvas(1024, 1024)
     const ctx = canvas.getContext('2d')

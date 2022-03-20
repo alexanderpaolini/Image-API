@@ -146,7 +146,9 @@ export class Utils {
    * Validate a URL
    * @param url The URL to test
    */
-  validateUrl (url: string): boolean {
+  validateUrl (url?: any): boolean {
+    if (!url) return false
+    if (typeof url !== 'string') return false
     return this.urlRegex.test(url)
   }
 
