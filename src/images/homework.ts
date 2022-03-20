@@ -24,14 +24,14 @@ export default {
         const canvas = new Canvas(750, 918)
         const ctx = canvas.getContext('2d')
 
-        await api.utils.drawImageFromRedisBuffer(ctx, 'homework', 0, 0, 750, 918)
+        await api.utils.drawImageFromRedisKey(ctx, 'homework', 0, 0, 750, 918)
 
-        await api.utils.drawAvatarFromUrl(ctx, url1, 271, 76, 128, 128)
-        await api.utils.drawAvatarFromUrl(ctx, url2, 271, 221, 128, 128)
-        await api.utils.drawAvatarFromUrl(ctx, url3, 271, 366, 128, 128)
-        await api.utils.drawAvatarFromUrl(ctx, url4, 271, 511, 128, 128)
-        await api.utils.drawAvatarFromUrl(ctx, url5, 271, 656, 128, 128)
-        await api.utils.drawAvatarFromUrl(ctx, url6, 271, 801, 128, 128)
+        await api.utils.drawImageFromUrl(ctx, url1, 271, 76, 128, 128)
+        await api.utils.drawImageFromUrl(ctx, url2, 271, 221, 128, 128)
+        await api.utils.drawImageFromUrl(ctx, url3, 271, 366, 128, 128)
+        await api.utils.drawImageFromUrl(ctx, url4, 271, 511, 128, 128)
+        await api.utils.drawImageFromUrl(ctx, url5, 271, 656, 128, 128)
+        await api.utils.drawImageFromUrl(ctx, url6, 271, 801, 128, 128)
 
         return canvas.toBuffer('image/png')
     }
