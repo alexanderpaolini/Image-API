@@ -12,9 +12,9 @@ export default {
         const canvas = new Canvas(636, 773)
         const ctx = canvas.getContext('2d')
 
-        await api.utils.drawImageFromRedisKey(ctx, 'npc', 0, 0, 636, 773)
-
         await api.utils.drawImageFromUrl(ctx, url, 160, 160, 536, 536)
+
+        await api.utils.drawImageFromRedisKey(ctx, 'npc', 0, 0, 636, 773)
 
         return canvas.toBuffer('image/png')
     }
